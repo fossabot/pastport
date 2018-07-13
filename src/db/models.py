@@ -33,24 +33,27 @@ class Place(Base):
 
 class PlaceType(Base):
     __tablename__ = 'placetypes'
-    type = Column(String(10), nullable = False)
+    category = Column(String(10), nullable = False)
     place_id = Column(Integer, ForeignKey(Place.id))
     id = Column(Integer, primary_key = True)
 
     @property
     def serialize(self):
        return {
-            'type'              : self.type,
+            'category'              : self.type,
             'place_id'          : self.place_id,
       }
 
 class Interaction(Base):
     __tablename__ = 'interactions'
     personal_name = Column(String(100))
+
+    # TODO: Is boolean an option
+    completed = Column(Integer, nullable = False)
     interest = Column(Integer, nullable = False)
     notes = Column(String(100))
     place_id = Column(Integer, ForeignKey(Place.id))
-    user_id = Column(Integer, ForeignKey(User.id))
+    user_id = Column(Integer, ForeignKey(Users.id))
     id = Column(Integer, primary_key = True)
     # Data and time
     # Weather auto lookup if it is an outdoor activity
@@ -60,27 +63,28 @@ class Interaction(Base):
     @property
     def serialize(self):
        return {
+            'completed'          : self.completed,
             'personal_name'     : self.personal_name,
             'interest'          : self.interest,
-            'notes'             : self.notes
+            'notes'             : self.notes,
             'place_id'          : self.place_id,
             'user_id'           : self.user_id,
       }
 
-class PlannedInteraction(Base):
-    __tablename__ = 'plannedinteractions'
-    notes = Column(String(100))
-    place_id = Column(Integer, ForeignKey(Place.id))
-    user_id = Column(Integer, ForeignKey(User.id))
-    id = Column(Integer, primary_key = True)
-
-    @property
-    def serialize(self):
-       return {
-            'notes'             : self.notes
-            'place_id'          : self.place_id,
-            'user_id'           : self.user_id,
-      }
+# class PlannedInteraction(Base):
+#     __tablename__ = 'plannedinteractions'
+#     notes = Column(String(100))
+#     place_id = Column(Integer, ForeignKey(Place.id))
+#     user_id = Column(Integer, ForeignKey(Users.id))
+#     id = Column(Integer, primary_key = True)
+#
+#     @property
+#     def serialize(self):
+#        return {
+#             'notes'             : self.notes,
+#             'place_id'          : self.place_id,
+#             'user_id'           : self.user_id,
+#       }
 
 engine = create_engine('postgresql://zachlavallee:***@localhost:5432/pastport')
 Base.metadata.create_all(engine)
