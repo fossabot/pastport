@@ -79,14 +79,13 @@ def getInteractions(user_id):
 # TODO: Add Post method handler for editing the interaction
 @app.route('/interactions/<int:interaction_id>', methods = ['GET', 'DELETE', 'POST'])
 def getInteraction(interaction_id):
+  interactionById = session.query(Interaction).filter_by(id = interaction_id).one()
   # Get inteaction by interaction_id
   if request.method == 'GET':
-    interactionById = session.query(Interaction).filter_by(id = interaction_id).one()
-    return jsonify(userById.serialize)
+    return jsonify(interactionById.serialize)
 
   # Delete interaction by interaction_id
   if request.method == 'DELETE':
-    interactionById = session.query(Interaction).filter_by(id = interaction_id).one()
     session.delete(interactionById)
     session.commit
     return make_response('', 204)
@@ -94,6 +93,9 @@ def getInteraction(interaction_id):
   #TODO:
   # Edit interaction by interaction_id
   if request.method == 'POST':
+    req = request.json
+    interactionById.completed = req['completed']
+    session.commit()
     return make_response('', 200)
 
 # @app.route('/profile/')
