@@ -101,11 +101,12 @@ def getInteraction(interaction_id):
 # @app.route('/profile/')
 # def showRestaurants():
 #   return make_response("Hello", 200)
-#
-# @app.route('/login/')
-# def showRestaurants():
-#   return make_response("Hello", 200)
-#
+
+@app.route('/login/')
+def showRestaurants():
+  return make_response("Hello", 200)
+
+
 # @app.route('/newthing/')
 # def showRestaurants():
 #   return make_response("Hello", 200)
