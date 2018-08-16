@@ -25,7 +25,21 @@ export default class Login extends Component {
 
     handleSubmit = event => {
         console.log("hello");
-        axios.get('/login')
+        axios.get('/login', {
+            params: {
+                username: 'zcjlavallee@gmail.com',
+                password: 'sdf',
+            }
+        })
+            .then(response => {
+                console.log("response")
+
+                console.log(response.data.cookie)
+                /* this.setState({
+                    lists: response.data.cookie
+                }) */
+            })
+            .catch(error => console.log(error))
         event.preventDefault();
     }
 

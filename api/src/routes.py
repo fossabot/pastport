@@ -102,9 +102,18 @@ def getInteraction(interaction_id):
 # def showRestaurants():
 #   return make_response("Hello", 200)
 
-@app.route('/login/')
+@app.route('/login', methods = ['GET'])
 def showRestaurants():
-  return make_response("Hello", 200)
+  user = request.args['username']
+  password = request.args['password']
+
+  username = session.query(Users).filter_by(email = user).scalar()
+  if username == None:
+    print('nothin')
+    return make_response('Invalid Email', 401)
+
+  print(username.name)
+  return make_response(jsonify(cookie='123ABC'), 200)
 
 
 # @app.route('/newthing/')
