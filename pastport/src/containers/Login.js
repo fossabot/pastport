@@ -27,19 +27,13 @@ export default class Login extends Component {
         console.log("hello");
         axios.get('/login', {
             params: {
-                username: 'zcjlavallee@gmail.com',
-                password: 'sdf',
+                username: this.state.email,
+                password: this.state.password,
             }
-        })
-            .then(response => {
-                console.log("response")
-
-                console.log(response.data.cookie)
-                /* this.setState({
-                    lists: response.data.cookie
-                }) */
-            })
-            .catch(error => console.log(error))
+        }).then(response => {
+            console.log("response")
+            console.log(response.data.cookie)
+        }).catch(error => console.log(error))
         event.preventDefault();
     }
 

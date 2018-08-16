@@ -112,7 +112,9 @@ def showRestaurants():
     print('nothin')
     return make_response('Invalid Email', 401)
 
-  print(username.name)
+  if password != username.password:
+    return make_response('Invalid Email', 401)
+
   return make_response(jsonify(cookie='123ABC'), 200)
 
 

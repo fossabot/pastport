@@ -9,7 +9,7 @@ class Users(Base):
     name = Column(String(40), nullable = False)
     email = Column(String(100), nullable = False)
     # Allow google and facebook login but also have a custom one
-    # password = Column(String(30), nullable = False)
+    password = Column(String(30), nullable = False)
     id = Column(Integer, primary_key = True)
     # Zip Code
     # Language
