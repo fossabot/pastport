@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import axios from "axios";
-import "./Login.css";
+import "./Register.css"
 
-export default class Login extends Component {
+export default class Register extends Component {
     constructor(props) {
         super(props);
 
@@ -24,21 +24,18 @@ export default class Login extends Component {
     }
 
     handleSubmit = event => {
-        axios.get('/login', {
-            params: {
-                email: this.state.email,
-                password: this.state.password,
-            }
+        axios.post('/users/new', {
+            email: this.state.email,
+            password: this.state.password,
         }).then(response => {
             console.log("response")
-            console.log(response.data.cookie)
         }).catch(error => console.log(error))
-        event.preventDefault();
+        event.prevetDefault();
     }
 
     render() {
         return (
-            <div className="Login">
+            <div className="Register" >
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="email" bsSize="large">
                         <ControlLabel>Email</ControlLabel>
@@ -63,10 +60,11 @@ export default class Login extends Component {
                         disabled={!this.validateForm()}
                         type="submit"
                     >
-                        Login
+                        Register
           </Button>
                 </form>
             </div>
         );
     }
+
 }

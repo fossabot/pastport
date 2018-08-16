@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect,jsonify, url_for, flash, make_response
 from flask import session as login_session
+from flask_hashing import Hashing
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from . import app
+hashing = Hashing(app)
 from .db.models import Base, Users, Interaction
 
 engine = create_engine('postgresql://zachlavallee:***@localhost:5432/pastport')
@@ -24,8 +26,8 @@ def getUsers():
 def newUser():
   req = request.json
 
-  newName = req['name']
-  newUser = Users(email = req['email'], name = newName)
+  newName = 'tempName'
+  newUser = Users(email = req['email'], password = req['password'], name = newName)
 
   session.add(newUser)
   session.commit()
@@ -104,6 +106,7 @@ def getInteraction(interaction_id):
 
 @app.route('/login', methods = ['GET'])
 def showRestaurants():
+  salt = 'salt'
   user = request.args['username']
   password = request.args['password']
 
@@ -112,7 +115,7 @@ def showRestaurants():
     print('nothin')
     return make_response('Invalid Email', 401)
 
-  if password != username.password:
+  if not hashing.check_value(username.password, password, salt):
     return make_response('Invalid Email', 401)
 
   return make_response(jsonify(cookie='123ABC'), 200)

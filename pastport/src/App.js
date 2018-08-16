@@ -18,6 +18,9 @@ class App extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
+              <LinkContainer to="/register">
+                <NavItem>Register</NavItem>
+              </LinkContainer>
               <LinkContainer to="/admin">
                 <NavItem>Admin</NavItem>
               </LinkContainer>
