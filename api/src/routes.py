@@ -5,6 +5,8 @@ from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from . import app
 hashing = Hashing(app)
+salt = 'salt'
+
 from .db.models import Base, Users, Interaction
 
 engine = create_engine('postgresql://zachlavallee:***@localhost:5432/pastport')
@@ -27,7 +29,8 @@ def newUser():
   req = request.json
 
   newName = 'tempName'
-  newUser = Users(email = req['email'], password = req['password'], name = newName)
+  password = hashing.hash_value(req['password'], salt=salt)
+  newUser = Users(email = req['email'], password = password, name = newName)
 
   session.add(newUser)
   session.commit()
@@ -106,8 +109,7 @@ def getInteraction(interaction_id):
 
 @app.route('/login', methods = ['GET'])
 def showRestaurants():
-  salt = 'salt'
-  user = request.args['username']
+  user = request.args['email']
   password = request.args['password']
 
   username = session.query(Users).filter_by(email = user).scalar()
@@ -116,7 +118,7 @@ def showRestaurants():
     return make_response('Invalid Email', 401)
 
   if not hashing.check_value(username.password, password, salt):
-    return make_response('Invalid Email', 401)
+    return make_response('Invalid Password', 401)
 
   return make_response(jsonify(cookie='123ABC'), 200)
 

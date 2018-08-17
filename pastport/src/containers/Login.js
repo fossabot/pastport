@@ -30,9 +30,9 @@ export default class Login extends Component {
                 password: this.state.password,
             }
         }).then(response => {
-            console.log("response")
             console.log(response.data.cookie)
-        }).catch(error => console.log(error))
+        }).catch(error => console.log(error.response))
+        //  Catch response and edit based on whether it was an email or password error. 
         event.preventDefault();
     }
 
