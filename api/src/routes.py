@@ -29,8 +29,12 @@ def newUser():
   req = request.json
 
   newName = 'tempName'
+  email = req['email']
+  if session.query(Users).filter_by(email = email).scalar() != None:
+    return make_response("User already exists", 401)
+
   password = hashing.hash_value(req['password'], salt=salt)
-  newUser = Users(email = req['email'], password = password, name = newName)
+  newUser = Users(email = email, password = password, name = newName)
 
   session.add(newUser)
   session.commit()

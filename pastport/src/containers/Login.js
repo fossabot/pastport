@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import LoaderButton from "../components/LoaderButton";
 import axios from "axios";
 import "./Login.css";
 
@@ -8,6 +9,7 @@ export default class Login extends Component {
         super(props);
 
         this.state = {
+            isLoading: false,
             email: "",
             password: ""
         };
@@ -24,6 +26,7 @@ export default class Login extends Component {
     }
 
     handleSubmit = event => {
+        this.setState({ isLoading: true })
         axios.get('/login', {
             params: {
                 email: this.state.email,
@@ -31,7 +34,10 @@ export default class Login extends Component {
             }
         }).then(response => {
             console.log(response.data.cookie)
-        }).catch(error => console.log(error.response))
+        }).catch(error => {
+            console.log(error.response)
+            this.setState({ isLoading: false })
+        })
         //  Catch response and edit based on whether it was an email or password error. 
         event.preventDefault();
     }
@@ -57,14 +63,15 @@ export default class Login extends Component {
                             type="password"
                         />
                     </FormGroup>
-                    <Button
+                    <LoaderButton
                         block
                         bsSize="large"
                         disabled={!this.validateForm()}
                         type="submit"
-                    >
-                        Login
-          </Button>
+                        isLoading={this.state.isLoading}
+                        text="Login"
+                        loadingText="Logging in…"
+                    />
                 </form>
             </div>
         );
