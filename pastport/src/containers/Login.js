@@ -38,7 +38,7 @@ export default class Login extends Component {
             console.log(error.response)
             this.setState({ isLoading: false })
         })
-        //  Catch response and edit based on whether it was an email or password error. 
+        this.props.userHasAuthenticated(true);
         event.preventDefault();
     }
 

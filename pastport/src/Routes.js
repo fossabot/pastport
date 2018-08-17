@@ -4,13 +4,14 @@ import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
 import Admin from "./containers/Admin";
-import Register from "./containers/Register"
+import Register from "./containers/Register";
+import AppliedRoute from "./components/AppliedRoute";
 
-export default () =>
+export default ({ childProps }) =>
     <Switch>
         <Route path="/register" exact component={Register} />
-        <Route path="/login" exact component={Login} />
+        <AppliedRoute path="/login" exact component={Login} props={childProps} />
         <Route path="/admin" exact component={Admin} />
-        <Route path="/" exact component={Home} />
+        <AppliedRoute path="/" exact component={Home} props={childProps} />
         <Route component={NotFound} />
     </Switch>;
